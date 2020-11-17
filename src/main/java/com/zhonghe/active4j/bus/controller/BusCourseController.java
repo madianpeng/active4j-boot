@@ -16,7 +16,9 @@ import com.zhonghe.active4j.core.util.MyBeanUtils;
 import com.zhonghe.active4j.core.util.ResponseUtil;
 import com.zhonghe.active4j.core.util.ShiroUtils;
 import com.zhonghe.active4j.core.util.UUIDUtil;
+import com.zhonghe.active4j.system.entity.SysFileEntity;
 import com.zhonghe.active4j.system.entity.SysUserEntity;
+import com.zhonghe.active4j.system.service.SysFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -47,6 +49,9 @@ public class BusCourseController extends BaseController {
 
 	@Autowired
 	private BusCourseService busCourseService;
+
+	@Autowired
+	private SysFileService sysFileService;
 	
 
 	/**
@@ -88,7 +93,7 @@ public class BusCourseController extends BaseController {
 	@RequestMapping("/add")
 	public String add(BusCourseEntity busCourseEntity, Model model) {
 		String uuid = UUIDUtil.getUUID();
-		model.addAttribute("id", uuid);
+		model.addAttribute("linkId", uuid);
 		return "bus/course/course_add.html";
 	}
 	
@@ -104,16 +109,45 @@ public class BusCourseController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		
 		try{
-			busCourseService.save(busCourseEntity);
+			if (StringUtils.isEmpty(busCourseEntity.getId())) {
+				//新增课程
+				busCourseEntity.setTeacherId(ShiroUtils.getSessionUser().getId());
+				busCourseEntity.setTeacherName(ShiroUtils.getSessionUser().getUserName());
+				busCourseService.save(busCourseEntity);
+			}else {
+				//编辑课程
+				BusCourseEntity temp = busCourseService.getById(busCourseEntity.getId());
+				MyBeanUtils.copyBeanNotNull2Bean(busCourseEntity, temp);
+				busCourseService.updateById(temp);
+			}
 		}catch(Exception e) {
-			log.error("保存用户信息报错，错误信息:" + e.getMessage());
 			j.setSuccess(false);
 			e.printStackTrace();
 		}
 		
 		return j;
 	}
-	
+
+
+	/**
+	 * 跳转到编辑页面
+	 * @param busCourseEntity
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/update")
+	public String update(BusCourseEntity busCourseEntity, Model model) {
+		busCourseEntity = busCourseService.getById(busCourseEntity.getId());
+
+		//视频文件信息
+		QueryWrapper<SysFileEntity> wrapper = new QueryWrapper<>();
+		//根据关联Id查询
+		wrapper.eq("LINKID",busCourseEntity.getLinkId());
+		List<SysFileEntity> fileList = sysFileService.list(wrapper);
+		model.addAttribute("course", busCourseEntity);
+		model.addAttribute("fileList", fileList);
+		return "bus/course/course_update.html";
+	}
 	
 	/**
 	 *  删除操作
@@ -122,13 +156,11 @@ public class BusCourseController extends BaseController {
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	@Log(type = LogType.del, name = "删除用户信息", memo = "删除了用户信息")
 	public AjaxJson delete(BusCourseEntity busCourseEntity) {
 		AjaxJson j = new AjaxJson();
 		try {
 			busCourseService.removeById(busCourseEntity.getId());
 		}catch(Exception e) {
-			log.error("删除用户信息出错，错误信息:" + e.getMessage() );
 			j.setSuccess(false);
 			e.printStackTrace();
 		}

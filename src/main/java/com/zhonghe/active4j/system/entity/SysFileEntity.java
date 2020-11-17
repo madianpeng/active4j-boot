@@ -43,5 +43,11 @@ public class SysFileEntity extends BaseEntity {
 	@TableField("LINKID")
 	@QueryField(condition=QueryCondition.eq, queryColumn="LINKID")
 	private String linkId;
+
+	/**
+	 * 关联Id
+	 */
+	@TableField("FILESIZE")
+	private String fileSize;
 	
 }

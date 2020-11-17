@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    @include("/include/_header.html", {'title':'用户管理'}){}
+</head>
+<body>
+
+
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="linkId" id="linkId" value="${linkId!}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" lay-verify="required" placeholder="请输入课程名称" autocomplete="off" class="layui-input" value="${user.userName!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">课时</label>
+        <div class="layui-input-inline">
+            <input type="text" name="classes" lay-verify="required" placeholder="请输入课时" autocomplete="off" class="layui-input" value="${user.realName!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="demoList"></tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-btn-save" id="form-btn-save" value="保存">
+        <input type="button" lay-submit lay-filter="form-btn-cancel" id="form-btn-cancel" value="取消">
+    </div>
+</div>
+
+
+@include("/include/_container.html", {'js':'/assets/bus/course/course.js'}){}
+</body>
+</html>

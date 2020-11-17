@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    @include("/include/_header.html", {'title':'用户管理'}){}
+</head>
+<body>
+
+
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="linkId" id="linkId" value="${course.linkId!}">
+    <input type="hidden" name="id" id="id" value="${course.id!}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="title" lay-verify="required" placeholder="请输入课程名称" autocomplete="off" class="layui-input" value="${course.title!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">课时</label>
+        <div class="layui-input-inline">
+            <input type="text" name="classes" lay-verify="required" placeholder="请输入课时" autocomplete="off" class="layui-input" value="${course.classes!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="demoList">
+                    @for(file in fileList) {
+                        <tr id="upload-${file.id!}">
+                            <td>${file.fileName!}</td>
+                            <td>${file.fileSize!}</td>
+                            <td><span style="color: #5FB878;">上传成功</span></td>
+                            <td>
+                                <button path="${file.filePath!}" val="${file.id!}" class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>
+                            </td>
+                        </tr>
+                    @}
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-btn-save" id="form-btn-save" value="保存">
+        <input type="button" lay-submit lay-filter="form-btn-cancel" id="form-btn-cancel" value="取消">
+    </div>
+</div>
+
+
+@include("/include/_container.html", {'js':'/assets/bus/course/course.js'}){}
+</body>
+</html>

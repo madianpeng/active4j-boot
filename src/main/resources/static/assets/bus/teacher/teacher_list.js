@@ -12,21 +12,20 @@
      */
     var Page = {
         tableId: 'sys-user-table',
-    	url: CXL.ctxPath + '/bus/course/datagrid?',
+    	url: CXL.ctxPath + '/bus/teacher/datagrid',
     	toolbar:'#sys-user-toolbar',
     	where:{field:'createDate', order:'desc'},
     	initColumn: function() {
     		return [[
     			     {type: 'numbers'}
     		        ,{field:'id', title: 'ID',hide:true}
-    		        ,{field:'title', title: '标题', width:'50%'}
-    		        ,{field:'realName',title: '课时', width:'15%'}
-    		        ,{field:'createDate',title: '创建时间', width:'20%', templet: '<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>'}
+    		        ,{field:'realName',title: '姓名', width:'40%'}
+    		        ,{field:'email',title: '课程数', width:'40%'}
     		        ,{fixed: 'right', title:'操作', toolbar: '#sys-user-tool', width:'15%'}
     			]];	 
     	},
-    	addUrl: CXL.ctxPath + "/bus/course/add",
-    	deleteUrl : CXL.ctxPath + "/bus/course/delete"
+    	addUrl: CXL.ctxPath + "/sys/user/add?type="+$("#type").val(),
+    	deleteUrl : CXL.ctxPath + "/sys/user/delete"
     	
     };
     
@@ -36,7 +35,10 @@
     Page.searchAction = function() {
          var queryData = {};
     	 //查询字段
-         queryData['title'] = $("#title").val();
+         queryData['userName'] = $("#userName").val();
+         queryData['realName'] = $("#realName").val();
+         queryData['status'] = $("#status").val();
+         queryData['deptId'] = $("#deptId").val();
          //排序字段
          queryData['field'] = 'createDate';
          queryData['order'] = 'desc';

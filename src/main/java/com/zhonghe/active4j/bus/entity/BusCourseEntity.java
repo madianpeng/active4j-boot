@@ -49,5 +49,12 @@ public class BusCourseEntity extends BaseEntity {
 	@TableField("TEACHER_NAME")
 	@QueryField(condition=QueryCondition.eq, queryColumn="TEACHER_NAME")
 	private String teacherName;
+
+	/**
+	 * 视频关联Id
+	 */
+	@TableField("LINK_ID")
+	@QueryField(condition=QueryCondition.eq, queryColumn="LINK_ID")
+	private String linkId;
 	
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  @include("/include/_header.html", {'title':'教师列表'}){}
+  
+</head>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">查询</div>
+          <div class="layui-card-body">
+          	<div class="layui-form">
+	            <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+	              	姓名：
+	              <div class="layui-inline">
+	                <input class="layui-input" name="realName" id="realName" autocomplete="off">
+	                <input type="hidden" name="type" id="type" value="${type!}">
+	              </div>
+	                 <div class="layui-row" style="margin-top: 10px;">
+						<div class="layui-col-md2 layui-col-md-offset10">
+						   <button id="btnSearch" class="layui-btn">搜索</button>
+						 </div>
+	                 </div>
+	             
+	            </div>
+             </div>
+            <table class="layui-hide" id="sys-user-table" lay-filter="sys-user-table"></table>
+            <!-- 表格操作按钮 -->
+            <script type="text/html" id="sys-user-tool">
+				<t:a cssClass="layui-btn layui-btn-primary layui-btn-xs" layEvent="detail" label="订阅"></t:a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  @include("/include/_container.html", {'js':'/assets/sys/user/user_list.js'}){}
+</body>
+</html>
